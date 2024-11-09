@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Web Page</title>
+    <title>A-Dog's Times Table Tester</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,7 +13,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: midnightblue;
+            background-color: white;
         }
         .container {
             text-align: center;
@@ -22,11 +22,38 @@
 </head>
 <body>
     <div class="container">
+        <div style="position: absolute; top: 10px; left: 10px;text-align: left;">
+            <table id="score-table" style="display: none;">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th style="width: 80px;text-align: right;">Current</th>
+                        <th style="width: 80px;text-align: right;">Best</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Score</td>
+                        <td id="score" style="text-align: right;">0</td>
+                        <td id="max-score" style="text-align: right;">0</td>
+                    </tr>
+                    <tr>
+                        <td>Time per question (s)</td>
+                        <td id="time-per-question" style="text-align: right;">0</td>
+                        <td id="min-time-per-question" style="text-align: right;">0</td>
+                    </tr>
+                    <tr>
+                        <td>Questions per min</td>
+                        <td id="questions-per-min" style="text-align: right;">0</td>
+                        <td id="max-questions-per-min" style="text-align: right;">0</td>
+                    </tr>
+            </table>
+        </div>
         <div>
             <h1 id="question"></h1>
         </div>
         <div id="answer">
-            <input type="text" id="answer-input" placeholder="Enter your answer">
+            <input type="number" id="answer-input" inputmode="numeric" placeholder="Enter your answer">
             <button id="submit">Submit</button>
         </div>
         <div>
