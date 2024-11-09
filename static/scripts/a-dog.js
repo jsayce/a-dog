@@ -23,14 +23,17 @@ var previousMaxQuestionsPerMin = getCookie('maxQuestionsPerMin');
 
 if (previousMaxScore) {
     document.getElementById('max-score').innerHTML = previousMaxScore;
+    document.getElementById('score-table').style.display = 'table';
 }
 
 if (previousMinTimePerQuestion) {
     document.getElementById('min-time-per-question').innerHTML = previousMinTimePerQuestion;
+    document.getElementById('score-table').style.display = 'table';
 }
 
 if (previousMaxQuestionsPerMin) {
     document.getElementById('max-questions-per-min').innerHTML = previousMaxQuestionsPerMin;
+    document.getElementById('score-table').style.display = 'table';
 }
 
 var maxScore = previousMaxScore ? parseInt(previousMaxScore) : 0;
