@@ -21,24 +21,18 @@ var previousMaxScore = getCookie('maxScore');
 var previousMinTimePerQuestion = getCookie('minTimePerQuestion');
 var previousMaxQuestionsPerMin = getCookie('maxQuestionsPerMin');
 
-if (previousMaxScore) {
-    document.getElementById('max-score').innerHTML = previousMaxScore;
-    document.getElementById('score-table').style.display = 'table';
-}
-
-if (previousMinTimePerQuestion) {
-    document.getElementById('min-time-per-question').innerHTML = previousMinTimePerQuestion;
-    document.getElementById('score-table').style.display = 'table';
-}
-
-if (previousMaxQuestionsPerMin) {
-    document.getElementById('max-questions-per-min').innerHTML = previousMaxQuestionsPerMin;
-    document.getElementById('score-table').style.display = 'table';
-}
+var cookieFound = (previousMaxScore || previousMinTimePerQuestion || previousMaxQuestionsPerMin);
 
 var maxScore = previousMaxScore ? parseInt(previousMaxScore) : 0;
 var minTimePerQuestion = previousMinTimePerQuestion ? parseFloat(previousMinTimePerQuestion) : Infinity;
 var maxQuestionsPerMin = previousMaxQuestionsPerMin ? parseFloat(previousMaxQuestionsPerMin) : 0;
+
+if (cookieFound) {
+    document.getElementById('score-table').style.display = 'table';
+    displayMaxScore();
+    displayMinTimePerQuestion();
+    displayMaxQuestionsPerMin();
+}
 
 var startTime = new Date().getTime();
 
@@ -72,19 +66,19 @@ document.getElementById('submit').onclick = function() {
 
         if (score > maxScore) {
             maxScore = score;
-            document.getElementById('max-score').innerHTML = maxScore;
+            displayMaxScore();
             setCookie('maxScore', maxScore);
         }
 
         if (averageTimePerQuestion < minTimePerQuestion) {
             minTimePerQuestion = averageTimePerQuestion;
-            document.getElementById('min-time-per-question').innerHTML = minTimePerQuestion.toFixed(2);
+            displayMinTimePerQuestion();
             setCookie('minTimePerQuestion', minTimePerQuestion);
         }
 
         if (questionsPerMin > maxQuestionsPerMin) {
             maxQuestionsPerMin = questionsPerMin;
-            document.getElementById('max-questions-per-min').innerHTML = maxQuestionsPerMin.toFixed(2);
+            displayMaxQuestionsPerMin();
             setCookie('maxQuestionsPerMin', maxQuestionsPerMin);
         }
 
@@ -108,6 +102,18 @@ document.getElementById('submit').onclick = function() {
 
     document.getElementById('answer-input').focus();
 };
+
+function displayMaxScore() {
+    document.getElementById('max-score').innerHTML = maxScore;
+}
+
+function displayMinTimePerQuestion() {
+    document.getElementById('min-time-per-question').innerHTML = minTimePerQuestion.toFixed(2);
+}
+
+function displayMaxQuestionsPerMin() {
+    document.getElementById('max-questions-per-min').innerHTML = maxQuestionsPerMin.toFixed(2);
+}
 
 function setCookie(name, value, days) {
     var expires = "";
