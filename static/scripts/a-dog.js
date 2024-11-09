@@ -21,6 +21,18 @@ var previousMaxScore = getCookie('maxScore');
 var previousMinTimePerQuestion = getCookie('minTimePerQuestion');
 var previousMaxQuestionsPerMin = getCookie('maxQuestionsPerMin');
 
+if (previousMaxScore) {
+    document.getElementById('max-score').innerHTML = previousMaxScore;
+}
+
+if (previousMinTimePerQuestion) {
+    document.getElementById('min-time-per-question').innerHTML = previousMinTimePerQuestion;
+}
+
+if (previousMaxQuestionsPerMin) {
+    document.getElementById('max-questions-per-min').innerHTML = previousMaxQuestionsPerMin;
+}
+
 var maxScore = previousMaxScore ? parseInt(previousMaxScore) : 0;
 var minTimePerQuestion = previousMinTimePerQuestion ? parseFloat(previousMinTimePerQuestion) : Infinity;
 var maxQuestionsPerMin = previousMaxQuestionsPerMin ? parseFloat(previousMaxQuestionsPerMin) : 0;
