@@ -13,7 +13,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f0f0f0;
+            background-color: midnightblue;
         }
         .container {
             text-align: center;
@@ -22,8 +22,16 @@
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to My Simple Web Page</h1>
-        <p>This is a basic HTML template.</p>
+        <div>
+            <h1 id="question"></h1>
+        </div>
+        <div id="answer">
+            <input type="text" id="answer-input" placeholder="Enter your answer">
+            <button id="submit">Submit</button>
+        </div>
+        <div>
+            <h1 id="outcome"></h1>
+        </div>
     </div>
 </body>
 <script src="scripts/a-dog.js"></script>
