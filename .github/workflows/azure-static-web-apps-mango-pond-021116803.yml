@@ -1,14 +1,12 @@
 name: Azure Static Web Apps CI/CD
-env:
-  PREVIEW_ENVIRONMENT: true
 on:
   push:
     branches:
-      - j-dog
+      - main
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - j-dog
+      - main
 
 jobs:
   build_and_deploy_job:

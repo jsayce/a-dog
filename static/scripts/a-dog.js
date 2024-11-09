@@ -16,9 +16,14 @@ window.onload = function() {
 var num1;
 var num2;
 var score = 0;
-var maxScore = 0;
-var minTimePerQuestion = 1000000;
-var maxQuestionsPerMin = 0;
+
+var previousMaxScore = getCookie('maxScore');
+var previousMinTimePerQuestion = getCookie('minTimePerQuestion');
+var previousMaxQuestionsPerMin = getCookie('maxQuestionsPerMin');
+
+var maxScore = previousMaxScore ? parseInt(previousMaxScore) : 0;
+var minTimePerQuestion = previousMinTimePerQuestion ? parseFloat(previousMinTimePerQuestion) : Infinity;
+var maxQuestionsPerMin = previousMaxQuestionsPerMin ? parseFloat(previousMaxQuestionsPerMin) : 0;
 
 var startTime = new Date().getTime();
 
@@ -53,16 +58,19 @@ document.getElementById('submit').onclick = function() {
         if (score > maxScore) {
             maxScore = score;
             document.getElementById('max-score').innerHTML = maxScore;
+            setCookie('maxScore', maxScore);
         }
 
         if (averageTimePerQuestion < minTimePerQuestion) {
             minTimePerQuestion = averageTimePerQuestion;
             document.getElementById('min-time-per-question').innerHTML = minTimePerQuestion.toFixed(2);
+            setCookie('minTimePerQuestion', minTimePerQuestion);
         }
 
         if (questionsPerMin > maxQuestionsPerMin) {
             maxQuestionsPerMin = questionsPerMin;
             document.getElementById('max-questions-per-min').innerHTML = maxQuestionsPerMin.toFixed(2);
+            setCookie('maxQuestionsPerMin', maxQuestionsPerMin);
         }
 
     } else {
@@ -85,3 +93,24 @@ document.getElementById('submit').onclick = function() {
 
     document.getElementById('answer-input').focus();
 };
+
+function setCookie(name, value, days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
