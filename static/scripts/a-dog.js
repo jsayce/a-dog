@@ -1,40 +1,24 @@
-window.onload = function() {
-    var question = getNextQuestion();
-    document.getElementById('question').innerHTML = question;
-
-    document.getElementById('answer-input').focus();
-
-    document.getElementById('answer-input').addEventListener('keypress', function(event) {
-        if (event.key === 'Enter') {
-            document.getElementById('submit').click();
-        }
-    });
-
-
-};
-
 var num1;
 var num2;
 var score = 0;
 
-var previousMaxScore = getCookie('maxScore');
-var previousMinTimePerQuestion = getCookie('minTimePerQuestion');
-var previousMaxQuestionsPerMin = getCookie('maxQuestionsPerMin');
+var maxScore;
+var minTimePerQuestion;
+var maxQuestionsPerMin;
 
-var cookieFound = (previousMaxScore || previousMinTimePerQuestion || previousMaxQuestionsPerMin);
+var startTime;
 
-var maxScore = previousMaxScore ? parseInt(previousMaxScore) : 0;
-var minTimePerQuestion = previousMinTimePerQuestion ? parseFloat(previousMinTimePerQuestion) : Infinity;
-var maxQuestionsPerMin = previousMaxQuestionsPerMin ? parseFloat(previousMaxQuestionsPerMin) : 0;
-
-if (cookieFound) {
-    document.getElementById('score-table').style.display = 'table';
-    displayMaxScore();
-    displayMinTimePerQuestion();
-    displayMaxQuestionsPerMin();
+function displayMaxScore() {
+    document.getElementById('max-score').innerHTML = maxScore;
 }
 
-var startTime = new Date().getTime();
+function displayMinTimePerQuestion() {
+    document.getElementById('min-time-per-question').innerHTML = minTimePerQuestion.toFixed(2);
+}
+
+function displayMaxQuestionsPerMin() {
+    document.getElementById('max-questions-per-min').innerHTML = maxQuestionsPerMin.toFixed(2);
+}
 
 function getNextQuestion() {
     num1 = Math.floor(Math.random() * 12) + 1;
@@ -43,7 +27,28 @@ function getNextQuestion() {
     return question;
 }
 
-document.getElementById('submit').onclick = function() {
+function setCookie(name, value, days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
+
+function processAnswer() {
 
     var userAnswer = document.getElementById('answer-input').value;
     var correctAnswer = num1 * num2;
@@ -101,37 +106,46 @@ document.getElementById('submit').onclick = function() {
     document.getElementById('answer-input').value = '';
 
     document.getElementById('answer-input').focus();
+}
+
+window.onload = function() {
+
+    var previousMaxScore = getCookie('maxScore');
+    var previousMinTimePerQuestion = getCookie('minTimePerQuestion');
+    var previousMaxQuestionsPerMin = getCookie('maxQuestionsPerMin');
+
+    var cookieFound = (previousMaxScore || previousMinTimePerQuestion || previousMaxQuestionsPerMin);
+
+    if (cookieFound) {
+        document.getElementById('score-table').style.display = 'table';
+        displayMaxScore();
+        displayMinTimePerQuestion();
+        displayMaxQuestionsPerMin();
+    }
+
+    maxScore = previousMaxScore ? parseInt(previousMaxScore) : 0;
+    minTimePerQuestion = previousMinTimePerQuestion ? parseFloat(previousMinTimePerQuestion) : Infinity;
+    maxQuestionsPerMin = previousMaxQuestionsPerMin ? parseFloat(previousMaxQuestionsPerMin) : 0;        
+        
+    document.getElementById('question').innerHTML = getNextQuestion();
+
+    document.getElementById('answer-input').focus();
+
+    document.getElementById('answer-input').addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            processAnswer();
+        }
+    });
+
+    document.getElementById('submit').addEventListener('click', function() {
+        processAnswer();
+    });
+
+    startTime = new Date().getTime()
 };
 
-function displayMaxScore() {
-    document.getElementById('max-score').innerHTML = maxScore;
-}
-
-function displayMinTimePerQuestion() {
-    document.getElementById('min-time-per-question').innerHTML = minTimePerQuestion.toFixed(2);
-}
-
-function displayMaxQuestionsPerMin() {
-    document.getElementById('max-questions-per-min').innerHTML = maxQuestionsPerMin.toFixed(2);
-}
-
-function setCookie(name, value, days) {
-    var expires = "";
-    if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + (days*24*60*60*1000));
-        expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
-}
-
-function getCookie(name) {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-    }
-    return null;
-}
+// todo
+// - tidy up the JS
+// - add bootstrap to make it responsive - see https://getbootstrap.com/docs/5.3/getting-started/introduction/
+// - get rid of the inline styles
+// - add a python api - see https://github.com/Azure-Samples/serverless-full-stack-apps-azure-sql/blob/main/azure-static-web-app/client/index.html
