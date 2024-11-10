@@ -108,6 +108,24 @@ function processAnswer() {
     document.getElementById('answer-input').focus();
 }
 
+function getMessage() {
+    var name = document.getElementById('user-name').value;
+    var url = `/api/getnumbers?name=${encodeURIComponent(name)}`;
+
+    fetch(url)
+        .then(response => {
+            return response.text();
+        })
+        .then(data => {
+            document.getElementById('message').innerText = data;
+        })
+        .catch(error => {
+            console.error('Error fetching numbers:', error);
+        });
+}
+
+document.getElementById('send-button').addEventListener('click', fetchNumbers);
+
 window.onload = function() {
 
     var previousMaxScore = getCookie('maxScore');
@@ -149,3 +167,4 @@ window.onload = function() {
 // - add bootstrap to make it responsive - see https://getbootstrap.com/docs/5.3/getting-started/introduction/
 // - get rid of the inline styles
 // - add a python api - see https://github.com/Azure-Samples/serverless-full-stack-apps-azure-sql/blob/main/azure-static-web-app/client/index.html
+// - figure out how to get python function running locally
