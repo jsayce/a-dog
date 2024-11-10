@@ -157,7 +157,7 @@ window.onload = function() {
         processAnswer();
     });
 
-    document.getElementById('send').addEventListener('click', fetchNumbers);
+    document.getElementById('send').addEventListener('click', getMessage);
 
     startTime = new Date().getTime()
 };
