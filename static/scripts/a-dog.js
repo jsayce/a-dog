@@ -124,8 +124,6 @@ function getMessage() {
         });
 }
 
-document.getElementById('send-button').addEventListener('click', fetchNumbers);
-
 window.onload = function() {
 
     var previousMaxScore = getCookie('maxScore');
@@ -158,6 +156,8 @@ window.onload = function() {
     document.getElementById('submit').addEventListener('click', function() {
         processAnswer();
     });
+
+    document.getElementById('send').addEventListener('click', fetchNumbers);
 
     startTime = new Date().getTime()
 };
